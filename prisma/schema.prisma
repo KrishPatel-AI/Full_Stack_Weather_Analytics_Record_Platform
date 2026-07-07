@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Stores a user's saved weather lookup: a location + date range + the
+// weather data retrieved for it. Backs the CRUD requirements of the
+// backend technical assessment.
+model WeatherRecord {
+  id            Int      @id @default(autoincrement())
+  locationQuery String // what the user typed
+  resolvedName  String // what we matched it to, e.g. "Austin, TX, US"
+  latitude      Float
+  longitude     Float
+  startDate     String // YYYY-MM-DD
+  endDate       String // YYYY-MM-DD
+  weatherData   String // JSON string: { current, forecast }
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

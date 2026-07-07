@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --canvas: 250 250 250;
+  --surface: 255 255 255;
+  --border: 228 228 231;
+  --ink: 24 24 27;
+  --muted: 113 113 122;
+  --accent: 37 99 235;
+  --accent-ink: 255 255 255;
+  --danger: 220 38 38;
+}
+
+.dark {
+  --canvas: 12 12 14;
+  --surface: 22 22 25;
+  --border: 42 42 46;
+  --ink: 244 244 245;
+  --muted: 161 161 170;
+  --accent: 96 165 250;
+  --accent-ink: 12 12 14;
+  --danger: 248 113 113;
+}
+
+body {
+  background-color: rgb(var(--canvas));
+  color: rgb(var(--ink));
+}
+
+.map-container {
+  height: 220px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  background: rgb(var(--surface));
+}
