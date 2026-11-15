@@ -1,6 +1,7 @@
-# Weather Explorer
+# Full-Stack Weather Analytics & Record Platform
+*(Full_Stack_Weather_Analytics_&_Record_Platform)*
 
-Weather Explorer is a full-stack weather intelligence and record-keeping web application built with Next.js 14, React 18, Tailwind CSS, Leaflet, and Prisma ORM with SQLite. The application serves as a consolidated dashboard providing real-time weather observations, a 24-hour hourly forecast timeline, a 5-day daily forecast, air pollution metrics, and an interactive weather map with server-proxied overlays. It also includes a persistent record management system supporting complete CRUD operations and multi-format data exports (JSON, CSV, XML, Markdown, and PDF).
+Full-Stack Weather Analytics & Record Platform is a comprehensive weather intelligence and record-keeping web application built with Next.js 14, React 18, Tailwind CSS, Leaflet, and Prisma ORM with SQLite. The application serves as a consolidated dashboard providing real-time weather observations, a 24-hour hourly forecast timeline, a 5-day daily forecast, air pollution metrics, and an interactive weather map with server-proxied overlays. It also includes a persistent record management system supporting complete CRUD operations and multi-format data exports (JSON, CSV, XML, Markdown, and PDF).
 
 ---
 
@@ -40,7 +41,7 @@ Weather Explorer is a full-stack weather intelligence and record-keeping web app
 
 ## Project Overview
 
-Weather Explorer was developed to fulfill the full-stack engineering requirements of the PM Accelerator AI Engineer Intern assessment. The project unifies two distinct functional milestones into a single, cohesive Next.js product:
+Full-Stack Weather Analytics & Record Platform was developed to fulfill the full-stack engineering requirements of the PM Accelerator AI Engineer Intern assessment. The project unifies two distinct functional milestones into a single, cohesive Next.js product:
 
 1. **Frontend Assessment Milestone**: A responsive meteorological dashboard offering location search with debounced autocomplete, GPS geolocation lookup, current atmospheric conditions, 24-hour timeline, 5-day forecast, air quality indices, interactive mapping, dynamic unit conversion (°C/°F), and system-aware light/dark theming.
 2. **Backend Assessment Milestone**: A relational record management system with persistent storage, full CRUD capabilities (Create, Read, Update, Delete), strict input validation against meteorological API horizons, and multi-format export utilities.
@@ -62,7 +63,7 @@ Users monitoring weather patterns across domestic and international locations en
 
 ## Proposed Solution
 
-Weather Explorer addresses these challenges through a unified client and server architecture:
+Full-Stack Weather Analytics & Record Platform addresses these challenges through a unified client and server architecture:
 
 - **Single-Screen Meteorological Dashboard**: Combines a hero conditions card with four dedicated sub-views (**Today**, **5-Day**, **Air Quality**, and **Map**) so users can explore atmospheric metrics without leaving the page.
 - **Robust Multi-Mode Geocoding**: Implements an intelligent geocoding resolver supporting city names, latitude/longitude coordinate pairs, formatted postal codes (`code, country`), and automated digit-length heuristics (5 digits defaulting to US, 6 digits defaulting to India).
@@ -229,7 +230,7 @@ flowchart TD
 ## Project Structure
 
 ```
-weather-nextjs/
+Full_Stack_Weather_Analytics_Record_Platform/
 ├── app/
 │   ├── api/
 │   │   ├── export/
@@ -293,7 +294,7 @@ weather-nextjs/
 
 ### Intelligent Geocoding Pipeline
 
-The geocoding resolver implemented in [`lib/weather.js`](file:///e:/Projects/Assessments/weather-nextjs/lib/weather.js#L24-L74) executes a multi-stage fallback strategy to resolve diverse user inputs:
+The geocoding resolver implemented in [`lib/weather.js`](file:///e:/Projects/Assessments/Full_Stack_Weather_Analytics_Record_Platform/lib/weather.js#L24-L74) executes a multi-stage fallback strategy to resolve diverse user inputs:
 
 1. **Direct Coordinate Parsing**: Detects if the input contains a comma separating two numbers. If both numbers fall within valid geographical ranges ($-90 \le \text{latitude} \le 90$ and $-180 \le \text{longitude} \le 180$), it triggers reverse geocoding via OpenWeatherMap's Reverse Geocoding API to resolve the canonical location name.
 2. **Explicit Postal Code Match**: Uses regular expressions to match queries formatted as `<code>, <CC>` (e.g., `380001, IN` or `78701, US`), directly querying the OpenWeatherMap ZIP Geocoding API.
@@ -305,7 +306,7 @@ The geocoding resolver implemented in [`lib/weather.js`](file:///e:/Projects/Ass
 
 ### Date Horizon & Range Validation
 
-The OpenWeatherMap 5-day forecast API only projects data up to 5 days into the future and does not include historical records on the free tier. To ensure data consistency, [`lib/weather.js`](file:///e:/Projects/Assessments/weather-nextjs/lib/weather.js#L208-L237) enforces strict validation rules before saving a record:
+The OpenWeatherMap 5-day forecast API only projects data up to 5 days into the future and does not include historical records on the free tier. To ensure data consistency, [`lib/weather.js`](file:///e:/Projects/Assessments/Full_Stack_Weather_Analytics_Record_Platform/lib/weather.js#L208-L237) enforces strict validation rules before saving a record:
 
 - **Format & Validity**: Validates that both dates match the `YYYY-MM-DD` ISO format and represent real calendar dates.
 - **Chronology**: Confirms that `startDate <= endDate`.
@@ -315,7 +316,7 @@ The OpenWeatherMap 5-day forecast API only projects data up to 5 days into the f
 
 ### Secure Weather Tile Proxy
 
-To prevent leaking the secret `OPENWEATHER_API_KEY` to the client browser, weather map tiles are routed through a server-side proxy route handler in [`app/api/tiles/[layer]/[z]/[x]/[y]/route.js`](file:///e:/Projects/Assessments/weather-nextjs/app/api/tiles/[layer]/[z]/[x]/[y]/route.js#L1-L30):
+To prevent leaking the secret `OPENWEATHER_API_KEY` to the client browser, weather map tiles are routed through a server-side proxy route handler in [`app/api/tiles/[layer]/[z]/[x]/[y]/route.js`](file:///e:/Projects/Assessments/Full_Stack_Weather_Analytics_Record_Platform/app/api/tiles/[layer]/[z]/[x]/[y]/route.js#L1-L30):
 
 - **Layer Whitelisting**: Restricts tile requests to permitted layers (`precipitation_new`, `clouds_new`, `temp_new`, `wind_new`, `pressure_new`) to prevent arbitrary upstream URL injection.
 - **Server-Side Fetch**: The server attaches `OPENWEATHER_API_KEY` to the upstream OpenWeather tile URL (`https://tile.openweathermap.org/map/${layer}/${z}/${x}/${y}.png`).
@@ -329,19 +330,19 @@ To prevent leaking the secret `OPENWEATHER_API_KEY` to the client browser, weath
 
 When a user saves a location with a date range, the application does not simply store the entire raw 5-day forecast. The function `filterForecastToRange(daily, startDate, endDate)` filters the 5-day daily forecast list to only include days where `startDate <= day.date <= endDate`.
 
-In the UI, [`components/RecordsSection.jsx`](file:///e:/Projects/Assessments/weather-nextjs/components/RecordsSection.jsx#L94-L102) extracts `rangeForecast` to dynamically compute and display the minimum and maximum temperatures across that specific date range:
+In the UI, [`components/RecordsSection.jsx`](file:///e:/Projects/Assessments/Full_Stack_Weather_Analytics_Record_Platform/components/RecordsSection.jsx#L94-L102) extracts `rangeForecast` to dynamically compute and display the minimum and maximum temperatures across that specific date range:
 
 $$\text{Range Summary} = \min_{d \in \text{range}}(d.\text{tempMinC}) \text{ to } \max_{d \in \text{range}}(d.\text{tempMaxC})$$
 
 ### Multi-Format Document Generation
 
-[`app/api/export/[format]/route.js`](file:///e:/Projects/Assessments/weather-nextjs/app/api/export/[format]/route.js#L1-L111) queries all records from SQLite and provides programmatic conversion into five standard formats:
+[`app/api/export/[format]/route.js`](file:///e:/Projects/Assessments/Full_Stack_Weather_Analytics_Record_Platform/app/api/export/[format]/route.js#L1-L111) queries all records from SQLite and provides programmatic conversion into five standard formats:
 
 1. **JSON**: Formatted using `JSON.stringify(records, null, 2)` with `Content-Type: application/json`.
 2. **CSV**: Extracts standard columns (`id`, `resolvedName`, `startDate`, `endDate`, `createdAt`, `updatedAt`) with CSV double-quote escaping (`""`) and `Content-Type: text/csv`.
 3. **XML**: Serializes records into a `<weatherRecords>` XML tree, escaping XML control characters (`&`, `<`, `>`) with `Content-Type: application/xml`.
 4. **Markdown**: Builds a Markdown table containing record metadata with `Content-Type: text/markdown`.
-5. **PDF**: Streams a formatted tabular report using `pdfkit`. The configuration in [`next.config.mjs`](file:///e:/Projects/Assessments/weather-nextjs/next.config.mjs#L5-L7) marks `pdfkit` and `fontkit` as `serverComponentsExternalPackages` to ensure clean Node.js runtime compilation.
+5. **PDF**: Streams a formatted tabular report using `pdfkit`. The configuration in [`next.config.mjs`](file:///e:/Projects/Assessments/Full_Stack_Weather_Analytics_Record_Platform/next.config.mjs#L5-L7) marks `pdfkit` and `fontkit` as `serverComponentsExternalPackages` to ensure clean Node.js runtime compilation.
 
 ---
 
@@ -606,7 +607,7 @@ All API endpoints are implemented as Next.js Route Handlers located under `app/a
 
 ## Database & Data Management
 
-The application utilizes **SQLite** via **Prisma ORM**. The data model is defined in [`prisma/schema.prisma`](file:///e:/Projects/Assessments/weather-nextjs/prisma/schema.prisma):
+The application utilizes **SQLite** via **Prisma ORM**. The data model is defined in [`prisma/schema.prisma`](file:///e:/Projects/Assessments/Full_Stack_Weather_Analytics_Record_Platform/prisma/schema.prisma):
 
 ```prisma
 generator client {
@@ -634,7 +635,7 @@ model WeatherRecord {
 
 ### Data Management Notes
 
-- **Client Singleton**: Instantiated in [`lib/prisma.js`](file:///e:/Projects/Assessments/weather-nextjs/lib/prisma.js) attached to `globalThis.prisma` to prevent socket exhaustion during Next.js development hot-reloading.
+- **Client Singleton**: Instantiated in [`lib/prisma.js`](file:///e:/Projects/Assessments/Full_Stack_Weather_Analytics_Record_Platform/lib/prisma.js) attached to `globalThis.prisma` to prevent socket exhaustion during Next.js development hot-reloading.
 - **Serialization**: Complex meteorological payloads (including current weather, hourly forecast, daily forecast, air pollution, and range-specific projections) are serialized into the `weatherData` text column and deserialized cleanly via `lib/serialize.js`.
 - **Database Location**: Stored locally at `prisma/dev.db`. Ignored in `.gitignore` to prevent committing local development databases to version control.
 
